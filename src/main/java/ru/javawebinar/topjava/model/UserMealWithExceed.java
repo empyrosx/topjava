@@ -19,8 +19,8 @@ public class UserMealWithExceed extends UserMeal {
      * @param calories    количество калорий
      * @param exceed      превышение дневной нормы калорий
      */
-    public UserMealWithExceed(LocalDateTime dateTime, String description, int calories, boolean exceed) {
-        super(dateTime, description, calories);
+    public UserMealWithExceed(long id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
+        super(id, dateTime, description, calories);
         this.exceed = exceed;
     }
 
@@ -31,7 +31,7 @@ public class UserMealWithExceed extends UserMeal {
      * @param exceed   признак превышения дневной нормы калорий
      */
     public UserMealWithExceed(UserMeal userMeal, boolean exceed) {
-        this(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), exceed);
+        this(userMeal.getId(), userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), exceed);
     }
 
     /**
