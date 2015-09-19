@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.model.UserMealWithExceed;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class UserMealsUtil {
      * @param endTime        окончание временного интервала для фильтрации
      * @param caloriesPerDay дневная норма калорий
      */
-    public static List<UserMealWithExceed> getFilteredMealsWithExceeded(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<UserMealWithExceed> getFilteredMealsWithExceeded(Collection<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // вычисляем количество калорий, полученных за каждый день
         Map<LocalDate, Integer> caloriesByDate = meals.stream()
                 .collect(Collectors.groupingBy(UserMeal::getDate,
@@ -48,7 +49,7 @@ public class UserMealsUtil {
         // выполняем фильтрацию приемов пищи и расчет превышения нормы калорий
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetween(meal.getTime(), startTime, endTime))
-                .map(meal -> new UserMealWithExceed(meal, caloriesByDate.get(meal.getDate()) >= caloriesPerDay))
+                .map(meal -> new UserMealWithExceed(meal, caloriesByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
 }

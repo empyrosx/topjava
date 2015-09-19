@@ -7,8 +7,12 @@ import java.time.LocalDateTime;
  * превышена ли дневная норма калорий.
  * При расчете превышения учитывается не только текущий приём пищи, а все приёмы пищи за этот день.
  */
-public class UserMealWithExceed extends UserMeal {
+public class UserMealWithExceed {
 
+    private LocalDateTime dateTime;
+    private String description;
+    private int calories;
+    private final long id;
     private final boolean exceed;
 
     /**
@@ -19,8 +23,11 @@ public class UserMealWithExceed extends UserMeal {
      * @param calories    количество калорий
      * @param exceed      превышение дневной нормы калорий
      */
-    public UserMealWithExceed(LocalDateTime dateTime, String description, int calories, boolean exceed) {
-        super(dateTime, description, calories);
+    public UserMealWithExceed(long id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.description = description;
+        this.calories = calories;
         this.exceed = exceed;
     }
 
@@ -31,7 +38,7 @@ public class UserMealWithExceed extends UserMeal {
      * @param exceed   признак превышения дневной нормы калорий
      */
     public UserMealWithExceed(UserMeal userMeal, boolean exceed) {
-        this(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), exceed);
+        this(userMeal.getId(), userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), exceed);
     }
 
     /**
@@ -41,5 +48,21 @@ public class UserMealWithExceed extends UserMeal {
      */
     public boolean isExceed() {
         return exceed;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public long getId() {
+        return id;
     }
 }

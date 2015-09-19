@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>User list</title>
+    <title>Список пользователей</title>
 </head>
 <body>
-<h2>User list</h2>
+<h2><a href="index.html">Home</a></h2>
+
+<h3>Список пользователей</h3>
 </body>
 </html>
