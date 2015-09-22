@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface UserService {
 
-    public User save(User user);
+    User save(User user);
 
-    public void delete(int id) throws NotFoundException;
+    void delete(int id) throws NotFoundException;
 
-    public User get(int id) throws NotFoundException;
+    User get(int id) throws NotFoundException;
 
-    public User getByEmail(String email) throws NotFoundException;
+    User getByEmail(String email) throws NotFoundException;
 
-    public List<User> getAll();
+    List<User> getAll();
 
-    public void update(User user);
+    void update(User user);
 }

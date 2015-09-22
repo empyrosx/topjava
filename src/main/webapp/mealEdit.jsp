@@ -42,7 +42,7 @@
             <dt>Калории:</dt>
             <dd><input type="number" value="${meal.calories}" name="calories"></dd>
         </dl>
-        <button type="submit">Сохранить</button>
+        <button type="submit" name="action" value="save">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
 </section>

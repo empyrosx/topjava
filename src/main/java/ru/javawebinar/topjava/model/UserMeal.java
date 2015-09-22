@@ -12,16 +12,18 @@ public class UserMeal {
     private LocalDateTime dateTime;
     private String description;
     private int calories;
+    private int userId;
 
-    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories) {
+    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories, int userId) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+        this.userId = userId;
     }
 
-    public UserMeal(LocalDateTime dateTime, String description, int calories) {
-        this(null, dateTime, description, calories);
+    public UserMeal(LocalDateTime dateTime, String description, int calories, int userId) {
+        this(null, dateTime, description, calories, userId);
     }
 
     /**
@@ -84,5 +86,13 @@ public class UserMeal {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

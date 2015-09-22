@@ -3,11 +3,15 @@ package ru.javawebinar.topjava.util;
 import junit.framework.TestCase;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
+import ru.javawebinar.topjava.repository.InMemoryUserMealRepository;
+import ru.javawebinar.topjava.repository.UserMealRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,17 +22,11 @@ public class UserMealsUtilTest extends TestCase {
     // норма калорий в день
     public static final int CALORIES_PER_DAY = 2000;
     // список приемов пищи
-    private List<UserMeal> userMeals;
+    private Collection<UserMeal> userMeals;
 
     public void setUp() throws Exception {
-        userMeals = Arrays.asList(
-                new UserMeal(1, LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new UserMeal(2, LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 500),
-                new UserMeal(3, LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
-                new UserMeal(4, LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 500),
-                new UserMeal(5, LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 1000),
-                new UserMeal(6, LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 500)
-        );
+        UserMealRepository repository = new InMemoryUserMealRepository();
+        userMeals = repository.getAll(LocalDate.MIN, LocalDate.MAX, 1);
     }
 
     /**

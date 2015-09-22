@@ -2,15 +2,22 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.LoggerWrapper;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class MockUserRepositoryImpl implements UserRepository {
     private static final LoggerWrapper LOG = LoggerWrapper.get(MockUserRepositoryImpl.class);
+    private final static List<User> users = new ArrayList<>();
+
+    static {
+        users.add(new User(1, "Иванов", "ivanov@mail.ru", "", Role.ROLE_USER));
+        users.add(new User(2, "Петров", "petrov@mail.ru", "", Role.ROLE_USER));
+    }
 
     @Override
     public boolean delete(int id) {
@@ -33,7 +40,7 @@ public class MockUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         LOG.info("getAll");
-        return Collections.emptyList();
+        return users;
     }
 
     @Override
