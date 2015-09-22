@@ -7,7 +7,7 @@ import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
-import ru.javawebinar.topjava.service.UserMealServiceImpl;
+import ru.javawebinar.topjava.service.UserMealService;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
@@ -19,7 +19,7 @@ import java.util.Collection;
 public class UserMealRestController {
 
     @Autowired
-    private UserMealServiceImpl service;
+    private UserMealService service;
 
     @Autowired
     private UserService userService;
