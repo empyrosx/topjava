@@ -11,10 +11,10 @@ public class UserMeal {
     private Integer id;
     private LocalDateTime dateTime;
     private String description;
-    private int calories;
-    private int userId;
+    private Integer calories;
+    private Integer userId;
 
-    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories, int userId) {
+    public UserMeal(Integer id, LocalDateTime dateTime, String description, Integer calories, Integer userId) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
@@ -22,7 +22,7 @@ public class UserMeal {
         this.userId = userId;
     }
 
-    public UserMeal(LocalDateTime dateTime, String description, int calories, int userId) {
+    public UserMeal(LocalDateTime dateTime, String description, Integer calories, Integer userId) {
         this(null, dateTime, description, calories, userId);
     }
 
@@ -50,7 +50,7 @@ public class UserMeal {
     /**
      * Возвращает количество калорий, содержащихся в текущем приёме пищи
      */
-    public int getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
@@ -72,7 +72,7 @@ public class UserMeal {
         this.description = description;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
@@ -88,11 +88,11 @@ public class UserMeal {
         this.id = id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 }

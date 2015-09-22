@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
 import ru.javawebinar.topjava.util.TimeUtil;
-import ru.javawebinar.topjava.util.UserMealsUtil;
 import ru.javawebinar.topjava.web.meal.UserMealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
@@ -21,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -118,16 +116,15 @@ public class MealServlet extends HttpServlet {
         return Integer.valueOf(paramId);
     }
 
-    private List<UserMealWithExceed> getUserMealsWithExceed(HttpServletRequest request) {
+    private Collection<UserMealWithExceed> getUserMealsWithExceed(HttpServletRequest request) {
         LocalDate startDate = TimeUtil.parseLocalDate(request.getParameter("startDate"), LocalDate.MIN);
         LocalDate endDate = TimeUtil.parseLocalDate(request.getParameter("endDate"), LocalDate.MAX);
         LocalTime startTime = TimeUtil.parseLocalTime(request.getParameter("startTime"), LocalTime.MIN);
         LocalTime endTime = TimeUtil.parseLocalTime(request.getParameter("endTime"), LocalTime.MAX);
-        Collection<UserMeal> mealList = mealController.getAll(startDate, endDate);
-        return UserMealsUtil.getFilteredMealsWithExceeded(mealList, startTime, endTime, 2000);
+        return mealController.getAll(startDate, endDate, startTime, endTime);
     }
 
-    private List<User> getUsers() {
+    private Collection<User> getUsers() {
         return userController.getAll();
     }
 }

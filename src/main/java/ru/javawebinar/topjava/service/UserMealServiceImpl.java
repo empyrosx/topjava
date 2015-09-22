@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
+import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -17,27 +18,17 @@ public class UserMealServiceImpl implements UserMealService {
 
     @Override
     public UserMeal save(UserMeal meal, int userId) {
-        if (meal.getUserId() != userId) {
-            throw new NotFoundException("Еда не может быть изменена, так как принадлежит другому пользователю");
-        }
-        return repository.save(meal);
+        return repository.save(meal, userId);
     }
 
     @Override
     public void delete(int id, int userId) throws NotFoundException {
-        UserMeal meal = get(id, userId);
-        if (meal != null) {
-            repository.delete(id);
-        }
+        ExceptionUtil.check(repository.delete(id, userId), id);
     }
 
     @Override
     public UserMeal get(int id, int userId) throws NotFoundException {
-        UserMeal result = repository.get(id);
-        if (result.getUserId() != userId) {
-            throw new NotFoundException("Еда не может быть получена, так как принадлежит другому пользователю");
-        }
-        return result;
+        return ExceptionUtil.check(repository.get(id, userId), id);
     }
 
     @Override

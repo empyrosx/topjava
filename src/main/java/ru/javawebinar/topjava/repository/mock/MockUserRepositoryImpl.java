@@ -6,17 +6,18 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class MockUserRepositoryImpl implements UserRepository {
     private static final LoggerWrapper LOG = LoggerWrapper.get(MockUserRepositoryImpl.class);
-    private final static List<User> users = new ArrayList<>();
+    private final static Map<Integer, User> users = new HashMap<>();
 
     static {
-        users.add(new User(1, "Иванов", "ivanov@mail.ru", "", Role.ROLE_USER));
-        users.add(new User(2, "Петров", "petrov@mail.ru", "", Role.ROLE_USER));
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.ROLE_USER);
+        users.put(1, new User(1, "Иванов", "ivanov@mail.ru", "", 2000, true, roles));
+        users.put(2, new User(2, "Петров", "petrov@mail.ru", "", 1500, true, roles));
     }
 
     @Override
@@ -34,13 +35,14 @@ public class MockUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         LOG.info("get " + id);
-        return null;
+        return users.get(id);
     }
 
     @Override
-    public List<User> getAll() {
+    public Collection<User> getAll() {
         LOG.info("getAll");
-        return users;
+        Collection<User> values = users.values();
+        return values;
     }
 
     @Override
