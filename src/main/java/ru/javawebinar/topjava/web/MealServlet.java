@@ -3,10 +3,10 @@ package ru.javawebinar.topjava.web;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.LoggedUser;
-import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
+import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 import ru.javawebinar.topjava.web.meal.UserMealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
-
-    private static final LoggerWrapper LOG = LoggerWrapper.get(MealServlet.class);
 
     private ConfigurableApplicationContext springContext;
     private UserMealRestController mealController;
@@ -80,7 +78,6 @@ public class MealServlet extends HttpServlet {
     }
 
     private void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.info("getAll");
         request.setAttribute("mealList", getUserMealsWithExceed(request));
         request.setAttribute("userList", getUsers());
         request.setAttribute("user", LoggedUser.id());
@@ -98,14 +95,12 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")),
                 LoggedUser.id());
-        LOG.info(userMeal.isNew() ? "Create {}" : "Update {}", userMeal);
         mealController.save(userMeal);
         response.sendRedirect("meals");
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = getId(request);
-        LOG.info("Delete {}", id);
         mealController.delete(id);
         response.sendRedirect("meals");
     }
@@ -124,30 +119,12 @@ public class MealServlet extends HttpServlet {
     }
 
     private List<UserMealWithExceed> getUserMealsWithExceed(HttpServletRequest request) {
-        LocalDate startDate = getLocalDateParam(request, "startDate", LocalDate.MIN);
-        LocalDate endDate = getLocalDateParam(request, "endDate", LocalDate.MAX);
-        LocalTime startTime = getLocalTimeParam(request, "startTime", LocalTime.MIN);
-        LocalTime endTime = getLocalTimeParam(request, "endTime", LocalTime.MAX);
+        LocalDate startDate = TimeUtil.parseLocalDate(request.getParameter("startDate"), LocalDate.MIN);
+        LocalDate endDate = TimeUtil.parseLocalDate(request.getParameter("endDate"), LocalDate.MAX);
+        LocalTime startTime = TimeUtil.parseLocalTime(request.getParameter("startTime"), LocalTime.MIN);
+        LocalTime endTime = TimeUtil.parseLocalTime(request.getParameter("endTime"), LocalTime.MAX);
         Collection<UserMeal> mealList = mealController.getAll(startDate, endDate);
         return UserMealsUtil.getFilteredMealsWithExceeded(mealList, startTime, endTime, 2000);
-    }
-
-    private LocalDate getLocalDateParam(HttpServletRequest request, String paramName, LocalDate defaultValue) {
-        String paramValue = request.getParameter(paramName);
-        if (paramValue != null && !paramValue.isEmpty()) {
-            return LocalDate.parse(paramValue);
-        } else {
-            return defaultValue;
-        }
-    }
-
-    private LocalTime getLocalTimeParam(HttpServletRequest request, String paramName, LocalTime defaultValue) {
-        String paramValue = request.getParameter(paramName);
-        if (paramValue != null && !paramValue.isEmpty()) {
-            return LocalTime.parse(paramValue);
-        } else {
-            return defaultValue;
-        }
     }
 
     private List<User> getUsers() {

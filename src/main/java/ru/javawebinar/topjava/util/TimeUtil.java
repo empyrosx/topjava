@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.util;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -43,5 +44,21 @@ public class TimeUtil {
      */
     public static String toString(LocalDateTime value) {
         return value == null ? "" : value.format(DATE_TIME_FORMATTER);
+    }
+
+    public static LocalDate parseLocalDate(String value, LocalDate defaultValue) {
+        if (value != null && !value.isEmpty()) {
+            return LocalDate.parse(value);
+        } else {
+            return defaultValue;
+        }
+    }
+
+    public static LocalTime parseLocalTime(String value, LocalTime defaultValue) {
+        if (value != null && !value.isEmpty()) {
+            return LocalTime.parse(value);
+        } else {
+            return defaultValue;
+        }
     }
 }
