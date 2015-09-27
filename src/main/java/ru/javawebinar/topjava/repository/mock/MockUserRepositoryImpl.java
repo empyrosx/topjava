@@ -2,15 +2,23 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.LoggerWrapper;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class MockUserRepositoryImpl implements UserRepository {
     private static final LoggerWrapper LOG = LoggerWrapper.get(MockUserRepositoryImpl.class);
+    private final static Map<Integer, User> users = new HashMap<>();
+
+    static {
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.ROLE_USER);
+        users.put(1, new User(1, "Иванов", "ivanov@mail.ru", "", 2000, true, roles));
+        users.put(2, new User(2, "Петров", "petrov@mail.ru", "", 1500, true, roles));
+    }
 
     @Override
     public boolean delete(int id) {
@@ -27,13 +35,14 @@ public class MockUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         LOG.info("get " + id);
-        return null;
+        return users.get(id);
     }
 
     @Override
-    public List<User> getAll() {
+    public Collection<User> getAll() {
         LOG.info("getAll");
-        return Collections.emptyList();
+        Collection<User> values = users.values();
+        return values;
     }
 
     @Override
