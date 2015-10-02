@@ -6,6 +6,10 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Collection;
 
+/**
+ * User: gkislin
+ * Date: 22.08.2014
+ */
 public interface UserService {
 
     User save(User user);
@@ -18,5 +22,5 @@ public interface UserService {
 
     Collection<User> getAll();
 
-    void update(User user);
+    void update(User user) throws NotFoundException;
 }

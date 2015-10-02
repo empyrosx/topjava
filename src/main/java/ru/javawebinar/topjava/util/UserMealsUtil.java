@@ -4,52 +4,66 @@ import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.time.Month;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Утилитный класс для выполнения вычислений над приёмами пищи
+ * GKislin
+ * 31.05.2015.
  */
 public class UserMealsUtil {
+    public static final List<UserMeal> MEAL_LIST = Arrays.asList(
+            new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
+            new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
+            new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
+            new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
+            new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
+            new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
+    );
 
-    /**
-     * Получение списка приемов пищи, отфильтрованного по временному интервалу, с информацией о превышении дневной нормы калорий.
-     * Например, имеется следующий набор приёмов пищи:
-     * <pre>
-     * 2015.08.27 08:00 | Завтрак | 500
-     * 2015.08.27 13:00 | Обед    | 500
-     * 2015.08.27 18:00 | Ужин    | 500
-     * 2015.08.28 08:00 | Завтрак | 500
-     * 2015.08.28 13:00 | Обед    | 1000
-     * 2015.08.28 18:00 | Ужин    | 500
-     * </pre>
-     * <p>
-     * 1. Вызов метода без ограничений (getFilteredMealsWithExceeded(meals, LocalTime.MIN, LocalTime.MAX, 2000))
-     * вернёт 6 объектов UserMealWithExceed (то есть все), у всех приёмов пищи за 2015.08.27 признак превышения
-     * дневной нормы калорий будет false, а у всех приёмов пиши за 2015.08.28 будет true
-     * <p>
-     * 2. Вызов метода с фильтрацией (getFilteredMealsWithExceeded(meals, LocalTime.of(07, 00), LocalTime.of(10, 00), 2000))
-     * вернёт 2 объекта UserMealWithExceed (так как в суточном промежуточке с 07:00 до 10:00 было только два приёма пищи - завтраки),
-     * у завтрака за 2015.08.27 признак превышения дневной нормы калорий будет false, а у завтрака за 2015.08.28 будет true
-     *
-     * @param meals          список всех приёмов пищи
-     * @param startTime      начало временного интервала для фильтрации
-     * @param endTime        окончание временного интервала для фильтрации
-     * @param caloriesPerDay дневная норма калорий
-     */
-    public static List<UserMealWithExceed> getFilteredMealsWithExceeded(Collection<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // вычисляем количество калорий, полученных за каждый день
-        Map<LocalDate, Integer> caloriesByDate = meals.stream()
-                .collect(Collectors.groupingBy(UserMeal::getDate,
-                        Collectors.summingInt(UserMeal::getCalories)));
+    public static void main(String[] args) {
+        List<UserMealWithExceed> filteredMealsWithExceeded = getFilteredWithExceeded(MEAL_LIST, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        filteredMealsWithExceeded.forEach(System.out::println);
 
-        // выполняем фильтрацию приемов пищи и расчет превышения нормы калорий
-        return meals.stream()
-                .filter(meal -> TimeUtil.isBetween(meal.getTime(), startTime, endTime))
-                .map(meal -> new UserMealWithExceed(meal, caloriesByDate.get(meal.getDate()) > caloriesPerDay))
+        System.out.println(getFilteredWithExceededByCycle(MEAL_LIST, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+    }
+
+    public static List<UserMealWithExceed> getWithExceeded(Collection<UserMeal> mealList, int caloriesPerDay) {
+        return getFilteredWithExceeded(mealList, LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
+    }
+
+    public static List<UserMealWithExceed> getFilteredWithExceeded(Collection<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        Map<LocalDate, Integer> caloriesSumByDate = mealList.stream().collect(Collectors.groupingBy(um -> um.getDateTime().toLocalDate(),
+                Collectors.summingInt(UserMeal::getCalories)));
+
+        return mealList.stream()
+                .filter(um -> TimeUtil.isBetween(um.getDateTime().toLocalTime(), startTime, endTime))
+                .map(um -> createWithExceed(um, caloriesSumByDate.get(um.getDateTime().toLocalDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
+
+    public static UserMealWithExceed createWithExceed(UserMeal um, boolean exceeded) {
+        return new UserMealWithExceed(um.getId(), um.getDateTime(), um.getDescription(), um.getCalories(), exceeded);
+    }
+
+    public static List<UserMealWithExceed> getFilteredWithExceededByCycle(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
+        Map<LocalDate, Integer> caloriesSumPerDate = new HashMap<>();
+        for (UserMeal meal : mealList) {
+            caloriesSumPerDate.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
+        }
+
+        List<UserMealWithExceed> mealExceeded = new ArrayList<>();
+        for (UserMeal meal : mealList) {
+            LocalDateTime dateTime = meal.getDateTime();
+            if (TimeUtil.isBetween(dateTime.toLocalTime(), startTime, endTime)) {
+                mealExceeded.add(createWithExceed(meal, caloriesSumPerDate.get(dateTime.toLocalDate()) > caloriesPerDay));
+            }
+        }
+        return mealExceeded;
+    }
+
 }

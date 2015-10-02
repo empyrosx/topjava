@@ -6,8 +6,10 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 
 import java.util.Collection;
-import java.util.List;
 
+/**
+ * User: gkislin
+ */
 public abstract class AbstractUserController {
     protected final LoggerWrapper LOG = LoggerWrapper.get(getClass());
 

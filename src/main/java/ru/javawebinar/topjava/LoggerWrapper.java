@@ -4,6 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+/**
+ * User: gkislin
+ * Date: 22.01.14
+ */
 public class LoggerWrapper {
 
     private Logger logger;
@@ -68,7 +72,7 @@ public class LoggerWrapper {
     }
 
     public NotFoundException getNotFoundException(String reason) {
-        logger.error("No data found");
+        logger.error(reason);
         return new NotFoundException(reason);
     }
 }

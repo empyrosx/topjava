@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.util.exception.ExceptionUtil;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
+/**
+ * GKislin
+ * 06.03.2015.
+ */
 @Service
 public class UserMealServiceImpl implements UserMealService {
 
@@ -17,22 +20,32 @@ public class UserMealServiceImpl implements UserMealService {
     private UserMealRepository repository;
 
     @Override
-    public UserMeal save(UserMeal meal, int userId) {
-        return repository.save(meal, userId);
-    }
-
-    @Override
-    public void delete(int id, int userId) throws NotFoundException {
-        ExceptionUtil.check(repository.delete(id, userId), id);
-    }
-
-    @Override
-    public UserMeal get(int id, int userId) throws NotFoundException {
+    public UserMeal get(int id, int userId) {
         return ExceptionUtil.check(repository.get(id, userId), id);
     }
 
     @Override
-    public Collection<UserMeal> getAll(LocalDate startDate, LocalDate endDate, int userId) {
-        return repository.getAll(startDate, endDate, userId);
+    public void delete(int id, int userId) {
+        ExceptionUtil.check(repository.delete(id, userId), id);
+    }
+
+    @Override
+    public Collection<UserMeal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        return repository.getBetween(startDateTime, endDateTime, userId);
+    }
+
+    @Override
+    public Collection<UserMeal> getAll(int userId) {
+        return repository.getAll(userId);
+    }
+
+    @Override
+    public UserMeal update(UserMeal meal, int userId) {
+        return ExceptionUtil.check(repository.save(meal, userId), meal.getId());
+    }
+
+    @Override
+    public UserMeal save(UserMeal meal, int userId) {
+        return repository.save(meal, userId);
     }
 }

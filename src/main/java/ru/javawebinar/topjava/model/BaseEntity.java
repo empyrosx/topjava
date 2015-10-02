@@ -2,8 +2,14 @@ package ru.javawebinar.topjava.model;
 
 import ru.javawebinar.topjava.LoggerWrapper;
 
+/**
+ * User: gkislin
+ * Date: 22.08.2014
+ */
 public class BaseEntity {
     protected static final LoggerWrapper LOG = LoggerWrapper.get(BaseEntity.class);
+
+    public static final int START_SEQ = 100000;
 
     protected Integer id;
 

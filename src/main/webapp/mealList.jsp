@@ -1,90 +1,63 @@
+<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Список приёмов пищи</title>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-    <style type="text/css">
-        table.meals {
-            border-collapse: collapse;
-        }
-
-        table.meals td,
-        table.meals th {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        .normal {
-            color: green;
-        }
-
-        .exceeded {
-            color: red;
-        }
-    </style>
+    <title>Meal list</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<form method="post" action="users">
-
-    Текущий пользователь:
-    <select name="user" value="${user}">
-
-        <c:forEach var="u" items="${userList}">
-            <option value="${u.id}" <c:out value="${user == u.id ? 'selected' : ''}"></c:out>>
-                <c:out value="${u.name}"></c:out>
-            </option>
-        </c:forEach>
-    </select>
-    <button type="submit">Выбрать</button>
-</form>
-
-
-<form action="<c:url value="/meals"/>" method="post">
-
-    <fieldset>
-        <legend>Фильтрация данных:</legend>
-        Дата, с:
-        <input name="startDate" value="${startDate}">
-        по:
-        <input name="endDate" value="${endDate}">
-
-        <p/>
-        Время, с:
-        <input name="startTime" value="${startTime}">
-        по:
-        <input name="endTime" value="${endTime}">
-
-        <p/>
-        <button type="submit">Фильтровать</button>
-    </fieldset>
-
-    <fieldset>
-        <legend>Основные данные:</legend>
-        <a href="meals?action=create">Добавить прием пищи</a>
-        </p>
-        <table class="meals">
-            <tr>
-                <th>Дата и время</th>
-                <th>Описание</th>
-                <th>Калории</th>
-                <th></th>
-                <th></th>
+<section>
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Meal list</h3>
+    <form method="post" action="meals?action=filter">
+        <dl>
+            <dt>From Date:</dt>
+            <dd><input type="date" name="startDate"></dd>
+        </dl>
+        <dl>
+            <dt>To Date:</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>From Time:</dt>
+            <dd><input type="time" name="startTime"></dd>
+        </dl>
+        <dl>
+            <dt>To Time:</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+    </form>
+    <hr>
+    <a href="meals?action=create">Add Meal</a>
+    <hr>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Calories</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <c:forEach items="${mealList}" var="meal">
+            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.UserMealWithExceed"/>
+            <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
+                <td>
+                   <%--<fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate"/>--%>
+                   <%--<fmt:formatDate value="${parsedDate}" pattern="yyyy.MM.dd HH:mm" />--%>
+                    <%=TimeUtil.toString(meal.getDateTime())%>
+                </td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
+                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
+                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
             </tr>
-
-            <c:forEach var="meal" items="${mealList}">
-                <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
-                    <fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate" type="date"/>
-                    <td><fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd HH:mm"/></td>
-                    <td><c:out value="${meal.description}"></c:out></td>
-                    <td><c:out value="${meal.calories}"></c:out></td>
-                    <td><a href="meals?action=update&id=${meal.id}">Изменить</a></td>
-                    <td><a href="meals?action=delete&id=${meal.id}">Удалить</a></td>
-                </tr>
-            </c:forEach>
-        </table>
-    </fieldset>
-</form>
+        </c:forEach>
+    </table>
+</section>
 </body>
 </html>
