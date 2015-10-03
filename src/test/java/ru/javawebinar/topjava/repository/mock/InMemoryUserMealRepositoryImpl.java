@@ -28,7 +28,7 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
 
     // Map  userId -> (mealId-> meal)
     private Map<Integer, Map<Integer, UserMeal>> repository = new ConcurrentHashMap<>();
-    private AtomicInteger counter = new AtomicInteger(0);
+    private AtomicInteger counter = new AtomicInteger(100001);
 
     {
         save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500), USER_ID);

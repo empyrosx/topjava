@@ -21,7 +21,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private static final LoggerWrapper LOG = LoggerWrapper.get(InMemoryUserRepositoryImpl.class);
 
     private Map<Integer, User> repository = new ConcurrentHashMap<>();
-    private AtomicInteger counter = new AtomicInteger(0);
+    private AtomicInteger counter = new AtomicInteger(100000);
 
     @PostConstruct
     public void postConstruct() {
