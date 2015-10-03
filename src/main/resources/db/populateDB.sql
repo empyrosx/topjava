@@ -20,7 +20,7 @@ INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Ужин', 
 
 INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Завтрак', '2015-05-31 10:00:00', 1000, 100000);
 INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Обед', '2015-05-31 13:00:00', 500, 100000);
-INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Завтрак', '2015-05-31 20:00:00', 510, 100000);
+INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Ужин', '2015-05-31 20:00:00', 510, 100000);
 
 INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Админ ланч', '2015-06-01 14:00:00', 510, 100001);
 INSERT INTO meals(description, datetime, calories, user_id) VALUES ('Админ ужин', '2015-06-01 21:00:00', 510, 100001);

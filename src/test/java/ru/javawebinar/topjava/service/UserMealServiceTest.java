@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
+import static ru.javawebinar.topjava.MealTestData.MATCHER;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
@@ -45,14 +45,14 @@ public class UserMealServiceTest {
     public void testGet() throws Exception {
         UserMeal actual = service.get(100002, USER_ID);
         UserMeal expected = repository.get(100002, USER_ID);
-        assertEquals(expected.toString(), actual.toString());
+        MATCHER.assertEquals(expected, actual);
     }
 
     @Test
     public void testDelete() throws Exception {
         service.delete(100002, USER_ID);
         repository.delete(100002, USER_ID);
-        assertEquals(repository.getAll(USER_ID), service.getAll(USER_ID));
+        MATCHER.assertCollectionEquals(repository.getAll(USER_ID), service.getAll(USER_ID));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class UserMealServiceTest {
         LocalDate endDate = LocalDate.of(2015, 05, 30);
         Collection<UserMeal> expected = repository.getBetweenDates(startDate, endDate, USER_ID);
         Collection<UserMeal> actual = service.getBetweenDates(startDate, endDate, USER_ID);
-        assertEquals(expected, actual);
+        MATCHER.assertCollectionEquals(expected, actual);
     }
 
     @Test
@@ -70,14 +70,14 @@ public class UserMealServiceTest {
         LocalDateTime endDate = LocalDateTime.of(2015, 05, 30, 17, 00, 00);
         Collection<UserMeal> expected = repository.getBetween(startDate, endDate, USER_ID);
         Collection<UserMeal> actual = service.getBetweenDateTimes(startDate, endDate, USER_ID);
-        assertEquals(expected, actual);
+        MATCHER.assertCollectionEquals(expected, actual);
     }
 
     @Test
     public void testGetAll() throws Exception {
         Collection<UserMeal> expected = repository.getAll(USER_ID);
         Collection<UserMeal> actual = service.getAll(USER_ID);
-        assertEquals(expected, actual);
+        MATCHER.assertCollectionEquals(expected, actual);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class UserMealServiceTest {
         expectedUndo.setCalories(calories);
         UserMeal expected = repository.save(actualUndo, USER_ID);
 
-        assertEquals(expected.toString(), actual.toString());
+        MATCHER.assertEquals(expected, actual);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class UserMealServiceTest {
         UserMeal actual = service.save(new UserMeal(dateTime, description, calories), USER_ID);
         UserMeal expected = repository.save(new UserMeal(dateTime, description, calories), USER_ID);
 
-        assertEquals(expected.toString(), actual.toString());
+        MATCHER.assertEquals(expected, actual);
     }
 
     @Test(expected = NotFoundException.class)
