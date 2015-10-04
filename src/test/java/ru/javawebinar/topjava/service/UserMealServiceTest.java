@@ -8,6 +8,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.MealTestData;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -62,6 +63,7 @@ public class UserMealServiceTest {
     @Test
     public void testUpdate() throws Exception {
         UserMeal updated = getUpdated();
+        updated.setUser(UserTestData.USER);
         service.update(updated, USER_ID);
         MATCHER.assertEquals(updated, service.get(MEAL1_ID, USER_ID));
     }
