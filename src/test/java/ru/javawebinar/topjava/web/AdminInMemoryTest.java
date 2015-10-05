@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.UserTestData;
@@ -18,6 +19,9 @@ import static ru.javawebinar.topjava.UserTestData.USER;
 public class AdminInMemoryTest {
     private static ConfigurableApplicationContext appCtx;
     private static AdminRestController controller;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @BeforeClass
     public static void beforeClass() {
@@ -46,8 +50,9 @@ public class AdminInMemoryTest {
         Assert.assertEquals(users.iterator().next(), ADMIN);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testDeleteNotFound() throws Exception {
+        exception.expect(NotFoundException.class);
         controller.delete(10);
     }
 }

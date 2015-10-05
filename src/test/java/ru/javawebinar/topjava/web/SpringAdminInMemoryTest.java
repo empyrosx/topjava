@@ -2,7 +2,9 @@ package ru.javawebinar.topjava.web;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,7 +24,7 @@ import static ru.javawebinar.topjava.UserTestData.USER;
  * GKislin
  * 13.03.2015.
  */
-@ContextConfiguration({"classpath:spring/spring-app.xml","classpath:spring/mock.xml"})
+@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/mock.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SpringAdminInMemoryTest {
 
@@ -31,6 +33,9 @@ public class SpringAdminInMemoryTest {
 
     @Autowired
     private UserRepository repository;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -46,8 +51,10 @@ public class SpringAdminInMemoryTest {
         Assert.assertEquals(users.iterator().next(), ADMIN);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testDeleteNotFound() throws Exception {
+        exception.expect(NotFoundException.class);
         controller.delete(10);
+
     }
 }
