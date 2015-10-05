@@ -10,6 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.MealTestData;
+import ru.javawebinar.topjava.TimingRule;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -35,6 +36,9 @@ public class UserMealServiceTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
+
+    @Rule
+    public TimingRule timingRule = new TimingRule();
 
     @Test
     public void testDelete() throws Exception {
