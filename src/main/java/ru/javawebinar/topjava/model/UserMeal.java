@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -14,6 +16,8 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal m WHERE (m.id = :id) and (m.user.id = :userId)"),
+        @NamedQuery(name = UserMeal.UPDATE, query = "UPDATE UserMeal m SET m.description = :description, m.dateTime = :dateTime, m.calories = :calories " +
+                "WHERE (m.id = :id) and (m.user.id = :userId)"),
         @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT m FROM UserMeal m WHERE (m.user.id = :userId) ORDER BY m.dateTime DESC"),
         @NamedQuery(name = UserMeal.BETWEEN, query = "SELECT m FROM UserMeal m WHERE (m.user.id = :userId) " +
                 "and (m.dateTime BETWEEN :startDate and :endDate) ORDER BY m.dateTime DESC"),
@@ -24,6 +28,7 @@ import java.util.Date;
 public class UserMeal extends BaseEntity {
 
     public static final String DELETE = "UserMeal.delete";
+    public static final String UPDATE = "UserMeal.update";
     public static final String ALL_SORTED = "UserMeal.getAllSorted";
     public static final String BETWEEN = "UserMeal.getBetween";
     public static final String SELECT_ONE = "UserMeal.get";
@@ -63,7 +68,7 @@ public class UserMeal extends BaseEntity {
     }
 
     public LocalDateTime getDateTime() {
-        return LocalDateTime.now();
+        return dateTime;
     }
 
     public String getDescription() {

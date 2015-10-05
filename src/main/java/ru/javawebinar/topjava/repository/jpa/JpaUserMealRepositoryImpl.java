@@ -32,14 +32,18 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
             User user = em.getReference(User.class, userId);
             userMeal.setUser(user);
             em.persist(userMeal);
-            return userMeal;
         } else {
-            if (userMeal.getUser() != null && userMeal.getUser().getId() == userId) {
-                return em.merge(userMeal);
-            } else {
+            Query query = em.createNamedQuery(UserMeal.UPDATE);
+            query.setParameter("id", userMeal.getId());
+            query.setParameter("description", userMeal.getDescription());
+            query.setParameter("dateTime", userMeal.getDateTime());
+            query.setParameter("calories", userMeal.getCalories());
+            query.setParameter("userId", userId);
+            if (query.executeUpdate() == 0) {
                 return null;
             }
         }
+        return userMeal;
     }
 
     @Override
@@ -58,7 +62,9 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
         query.setParameter("userId", userId);
         List<UserMeal> result = query.getResultList();
         if (result.size() > 0) {
-            return result.get(0);
+            UserMeal r = result.get(0);
+            System.out.println("UserMeal.get(): " + r.getDateTime());
+            return r;
         } else {
             return null;
         }
