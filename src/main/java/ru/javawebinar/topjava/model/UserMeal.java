@@ -46,7 +46,7 @@ public class UserMeal extends BaseEntity {
     @Size(min = 1)
     protected int calories;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public UserMeal() {
