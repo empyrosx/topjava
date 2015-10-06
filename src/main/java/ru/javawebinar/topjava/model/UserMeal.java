@@ -1,14 +1,8 @@
 package ru.javawebinar.topjava.model;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * GKislin
@@ -43,7 +37,6 @@ public class UserMeal extends BaseEntity {
 
     @Column(name = "calories", nullable = false)
     @NotNull
-    @Size(min = 1)
     protected int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -12,9 +12,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.TimingRule;
 import ru.javawebinar.topjava.UserTestData;
+import ru.javawebinar.topjava.matcher.CauseMatcher;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -95,5 +97,12 @@ public class UserMealServiceTest {
     public void testGetBetween() throws Exception {
         MATCHER.assertCollectionEquals(Arrays.asList(MEAL3, MEAL2, MEAL1),
                 service.getBetweenDates(LocalDate.of(2015, Month.MAY, 30), LocalDate.of(2015, Month.MAY, 30), USER_ID));
+    }
+
+    @Test
+    public void testNullDateTime() {
+        exception.expectCause(new CauseMatcher(ConstraintViolationException.class));
+        UserMeal meal = new UserMeal(null, "Завтрак с неуказанной датой", 1000);
+        service.save(meal, USER_ID);
     }
 }
