@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.UserTestData;
@@ -24,6 +25,7 @@ import static ru.javawebinar.topjava.UserTestData.USER;
  */
 @ContextConfiguration({"classpath:spring/spring-app.xml","classpath:spring/mock.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("mock")
 public class SpringAdminInMemoryTest {
 
     @Autowired

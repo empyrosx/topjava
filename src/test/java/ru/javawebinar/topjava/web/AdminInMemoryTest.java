@@ -22,7 +22,8 @@ public class AdminInMemoryTest {
     @BeforeClass
     public static void beforeClass() {
         appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring/mock.xml");
-        System.out.println("\n" + Arrays.toString(appCtx.getBeanDefinitionNames()) + "\n");
+        appCtx.getEnvironment().setActiveProfiles("postgres", "mock");
+        appCtx.refresh();
         controller = appCtx.getBean(AdminRestController.class);
     }
 

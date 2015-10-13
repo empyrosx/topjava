@@ -8,7 +8,7 @@
 
     <context:annotation-config/>
 
-    <beans profile="jdbc,jpa,datajpa">
+    <beans profile="jdbc,jpa,datajpa,mock">
         <context:component-scan base-package="ru.javawebinar.**.service"/>
         <context:component-scan base-package="ru.javawebinar.**.web"/>
     </beans>
