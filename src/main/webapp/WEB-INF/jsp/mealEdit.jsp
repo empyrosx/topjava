@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
@@ -12,7 +12,7 @@
     <h3>Edit meal</h3>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.UserMeal" scope="request"/>
-    <form method="post" action="meals">
+    <form method="post" action="meals?save=true">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>

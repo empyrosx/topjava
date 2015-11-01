@@ -4,7 +4,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.UserMeal;
-import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.UserMealRestController;
 
 import javax.servlet.ServletConfig;
@@ -13,9 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 
 /**
@@ -47,12 +44,12 @@ public class MealServlet extends HttpServlet {
             mealController.create(userMeal);
             response.sendRedirect("meals");
         } else {
-            LocalDate startDate = TimeUtil.parseLocalDate(request.getParameter("startDate"), TimeUtil.MIN_DATE);
-            LocalDate endDate = TimeUtil.parseLocalDate(request.getParameter("endDate"), TimeUtil.MAX_DATE);
-            LocalTime startTime = TimeUtil.parseLocalTime(request.getParameter("startTime"), LocalTime.MIN);
-            LocalTime endTime = TimeUtil.parseLocalTime(request.getParameter("endTime"), LocalTime.MAX);
-            request.setAttribute("mealList", mealController.getBetween(startDate, startTime, endDate, endTime));
-            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+//            LocalDate startDate = TimeUtil.parseLocalDate(request.getParameter("startDate"), TimeUtil.MIN_DATE);
+//            LocalDate endDate = TimeUtil.parseLocalDate(request.getParameter("endDate"), TimeUtil.MAX_DATE);
+//            LocalTime startTime = TimeUtil.parseLocalTime(request.getParameter("startTime"), LocalTime.MIN);
+//            LocalTime endTime = TimeUtil.parseLocalTime(request.getParameter("endTime"), LocalTime.MAX);
+//            request.setAttribute("mealList", mealController.getBetween(startDate, startTime, endDate, endTime));
+//            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
         }
     }
 
@@ -60,20 +57,20 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null) {
-            LOG.info("getAll");
-            request.setAttribute("mealList", mealController.getAll());
-            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+//            LOG.info("getAll");
+//            request.setAttribute("mealList", mealController.getAll());
+//            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
         } else if (action.equals("delete")) {
-            int id = getId(request);
-            LOG.info("Delete {}", id);
-            mealController.delete(id);
-            response.sendRedirect("meals");
+//            int id = getId(request);
+//            LOG.info("Delete {}", id);
+//            mealController.delete(id);
+//            response.sendRedirect("meals");
         } else {
-            final UserMeal meal = action.equals("create") ?
-                    new UserMeal(LocalDateTime.now(), "", 1000) :
-                    mealController.get(getId(request));
-            request.setAttribute("meal", meal);
-            request.getRequestDispatcher("mealEdit.jsp").forward(request, response);
+//            final UserMeal meal = action.equals("create") ?
+//                    new UserMeal(LocalDateTime.now(), "", 1000) :
+//                    mealController.get(getId(request));
+//            request.setAttribute("meal", meal);
+//            request.getRequestDispatcher("mealEdit.jsp").forward(request, response);
         }
     }
 

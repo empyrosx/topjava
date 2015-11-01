@@ -16,24 +16,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class RootController {
-    @Autowired
-    private UserService service;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String root() {
         return "index";
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String userList(Model model) {
-        model.addAttribute("userList", service.getAll());
-        return "userList";
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public String setUser(HttpServletRequest request) {
-        int userId = Integer.valueOf(request.getParameter("userId"));
-        LoggedUser.setId(userId);
-        return "redirect:meals";
     }
 }

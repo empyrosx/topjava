@@ -1,16 +1,22 @@
 <%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
     <title>Meal list</title>
     <link rel="stylesheet" href="css/style.css">
+    <jsp:include page="fragments/headTag.jsp"/>
 </head>
 <body>
+<jsp:include page="fragments/bodyHeader.jsp"/>
+
 <section>
     <h2><a href="index.jsp">Home</a></h2>
+
     <h3>Meal list</h3>
+
     <form method="post" action="meals?action=filter">
         <dl>
             <dt>From Date:</dt>
@@ -47,8 +53,8 @@
             <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.UserMealWithExceed"/>
             <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
                 <td>
-                   <%--<fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate"/>--%>
-                   <%--<fmt:formatDate value="${parsedDate}" pattern="yyyy.MM.dd HH:mm" />--%>
+                        <%--<fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate"/>--%>
+                        <%--<fmt:formatDate value="${parsedDate}" pattern="yyyy.MM.dd HH:mm" />--%>
                     <%=TimeUtil.toString(meal.getDateTime())%>
                 </td>
                 <td>${meal.description}</td>
@@ -59,5 +65,7 @@
         </c:forEach>
     </table>
 </section>
+<hr>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
