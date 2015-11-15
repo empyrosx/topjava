@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -97,7 +98,9 @@
         </div>
     </div>
 </div>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
+
 <script type="text/javascript" src="webjars/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
