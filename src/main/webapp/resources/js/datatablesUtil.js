@@ -103,7 +103,6 @@ function renderEditBtn(data, type, row) {
 
 function renderDeleteBtn(data, type, row) {
     if (type == 'display') {
-        debugger;
         return '<a class="btn btn-xs btn-danger" onclick="deleteRow(' + row.id + ');">Delete</a>';
     }
     return data;
