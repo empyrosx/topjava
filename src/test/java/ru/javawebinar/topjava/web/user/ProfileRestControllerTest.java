@@ -1,12 +1,10 @@
 package ru.javawebinar.topjava.web.user;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
@@ -21,9 +19,6 @@ import static ru.javawebinar.topjava.UserTestData.*;
 public class ProfileRestControllerTest extends AbstractControllerTest {
 
     public static final String REST_URL = ProfileRestController.REST_URL + '/';
-
-    @Autowired
-    private UserService service;
 
     @Test
     public void testGet() throws Exception {
@@ -45,7 +40,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
         mockMvc.perform(delete(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(TestUtil.userHttpBasic(USER)))
                 .andExpect(status().isOk());
-        MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
+        MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), userService.getAll());
     }
 
     @Test
@@ -57,6 +52,6 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        MATCHER.assertEquals(updated, new User(service.getByEmail("newEmail")));
+        MATCHER.assertEquals(updated, new User(userService.getByEmail("newEmail")));
     }
 }
